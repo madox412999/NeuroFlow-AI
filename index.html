@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuroflow AI — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css.css" />
+</head>
+<body>
+  <div class="app" data-app>
+    <button type="button" class="sidebar-toggle" aria-label="Open menu" aria-expanded="false" data-sidebar-toggle>
+      <span class="sidebar-toggle__bar"></span>
+      <span class="sidebar-toggle__bar"></span>
+    </button>
+    <div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+
+    <aside class="sidebar" data-sidebar>
+      <div class="sidebar__brand">
+        <span class="sidebar__logo" aria-hidden="true"></span>
+        <span class="sidebar__name">Neuroflow AI</span>
+      </div>
+      <nav class="sidebar__nav" aria-label="Main">
+        <a href="#" class="nav-link nav-link--active" data-nav="dashboard">
+          <svg class="nav-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 11h4V4H4v7zm6 9h4v-7h-4v7zm0-9h4V4h-4v7zm6 13h4v-7h-4v7zm0-13h4V4h-4v7z"/></svg>
+          Dashboard
+        </a>
+        <a href="#" class="nav-link" data-nav="analytics">
+          <svg class="nav-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 6-7"/></svg>
+          Analytics
+        </a>
+        <a href="#" class="nav-link" data-nav="agents">
+          <svg class="nav-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="8" r="3"/><path d="M6 20v-1a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1"/><path d="M18 11a2 2 0 1 0 0-4"/></svg>
+          AI Agents
+        </a>
+        <a href="#" class="nav-link" data-nav="workflows">
+          <svg class="nav-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M5 16h10"/></svg>
+          Workflows
+        </a>
+        <a href="#" class="nav-link" data-nav="integrations">
+          <svg class="nav-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Integrations
+        </a>
+        <a href="#" class="nav-link" data-nav="settings">
+          <svg class="nav-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          Settings
+        </a>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" data-sidebar-avatar>M</div>
+          <div class="sidebar__user-meta">
+            <span class="sidebar__user-name" data-sidebar-name>M. Workspace</span>
+            <span class="sidebar__user-plan" data-sidebar-email>m@neuroflow.ai</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="header">
+        <div class="header__titles">
+          <h1 class="header__title" data-page-title>Dashboard</h1>
+          <p class="header__subtitle" data-page-subtitle>Overview of agents, usage, and recent activity</p>
+        </div>
+        <div class="header__actions">
+          <button type="button" class="btn btn--ghost" data-btn-export>Export</button>
+          <button type="button" class="btn btn--primary" data-btn-workflow>Manage workflows</button>
+        </div>
+      </header>
+
+      <div class="view-panels">
+      <div class="view-panel view-panel--active" data-view-panel="dashboard" id="view-dashboard">
+      <div class="page-layout">
+      <div class="page-col">
+      <div class="stats" role="list" data-stats></div>
+
+      <section class="panel panel--chart" aria-labelledby="chart-heading">
+        <div class="panel__head">
+          <div>
+            <h2 id="chart-heading" class="panel__title">Usage &amp; throughput</h2>
+            <p class="panel__desc" data-chart-desc>Requests and tokens over the last 14 days</p>
+          </div>
+          <div class="panel__tabs" role="tablist">
+            <button type="button" class="tab tab--active" role="tab" aria-selected="true" data-tab="14d">14d</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" data-tab="30d">30d</button>
+            <button type="button" class="tab" role="tab" aria-selected="false" data-tab="90d">90d</button>
+          </div>
+        </div>
+        <div class="chart-wrap" data-chart-wrap>
+          <svg class="chart" viewBox="0 0 800 220" preserveAspectRatio="none" aria-hidden="true" data-chart>
+            <defs>
+              <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0.22" />
+                <stop offset="42%" stop-color="#818cf8" stop-opacity="0.07" />
+                <stop offset="100%" stop-color="#0c0e14" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="chartLine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="48%" stop-color="#7dd3fc" />
+                <stop offset="100%" stop-color="#a5b4fc" />
+              </linearGradient>
+            </defs>
+            <path class="chart__grid" d="M0 55H800M0 110H800M0 165H800" />
+            <path class="chart__area" data-chart-area fill="url(#chartFill)" />
+            <path class="chart__line" data-chart-line fill="none" stroke="url(#chartLine)" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="chart__labels" data-chart-labels></div>
+        </div>
+      </section>
+
+      <div class="grid-2">
+        <section class="panel" aria-labelledby="agents-heading">
+          <div class="panel__head">
+            <div>
+              <h2 id="agents-heading" class="panel__title">AI agents</h2>
+              <p class="panel__desc">Status across your deployed models</p>
+            </div>
+            <a href="#" class="link-muted" data-nav="agents">View all</a>
+          </div>
+          <div class="agent-preview agent-preview--empty" data-agent-preview aria-live="polite">
+            <div class="agent-preview__kicker">
+              <span class="agent-preview__dot" aria-hidden="true"></span>
+              <span class="agent-preview__label">Active agent</span>
+            </div>
+            <div class="agent-preview__top">
+              <h3 class="agent-preview__name" data-agent-preview-name>None</h3>
+              <span data-agent-preview-pill class="status status--placeholder">None</span>
+            </div>
+            <p class="agent-preview__desc" data-agent-preview-desc>Select an agent below to see status and details.</p>
+          </div>
+          <ul class="agent-list" data-agent-list></ul>
+        </section>
+
+        <section class="panel" aria-labelledby="activity-heading">
+          <div class="panel__head">
+            <div>
+              <h2 id="activity-heading" class="panel__title">Activity</h2>
+              <p class="panel__desc">Recent events in your workspace</p>
+            </div>
+          </div>
+          <ul class="activity-feed" data-activity></ul>
+        </section>
+      </div>
+      </div><!-- /.page-col -->
+      <aside class="right-rail" aria-label="System overview">
+        <div class="panel right-panel">
+          <div class="right-panel__head">
+            <h3 class="right-panel__title">System status</h3>
+            <span class="right-panel__badge right-panel__badge--ok">Operational</span>
+          </div>
+          <ul class="status-list">
+            <li class="status-row">
+              <span class="status-row__dot status-row__dot--ok" aria-hidden="true"></span>
+              <span class="status-row__label">API gateway</span>
+              <span class="status-row__val">OK</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__dot status-row__dot--ok" aria-hidden="true"></span>
+              <span class="status-row__label">Worker pool</span>
+              <span class="status-row__val">Healthy</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__dot status-row__dot--ok" aria-hidden="true"></span>
+              <span class="status-row__label">Model serving</span>
+              <span class="status-row__val">OK</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__dot status-row__dot--neutral" aria-hidden="true"></span>
+              <span class="status-row__label">Vector DB</span>
+              <span class="status-row__val">98 ms</span>
+            </li>
+          </ul>
+          <p class="right-panel__footer">Uptime <strong data-rr-uptime>99.97%</strong> · 30 d avg</p>
+        </div>
+        <div class="panel right-panel">
+          <div class="right-panel__head">
+            <h3 class="right-panel__title">Recent alerts</h3>
+          </div>
+          <ul class="alerts-list">
+            <li class="alert-item">
+              <span class="alert-item__icon alert-item__icon--warn" aria-label="Warning">⚠</span>
+              <div class="alert-item__body">
+                <span class="alert-item__text">Data extractor degraded</span>
+                <span class="alert-item__time">2 min ago</span>
+              </div>
+            </li>
+            <li class="alert-item">
+              <span class="alert-item__icon alert-item__icon--ok" aria-label="Resolved">✓</span>
+              <div class="alert-item__body">
+                <span class="alert-item__text">Invoice pipeline recovered</span>
+                <span class="alert-item__time">8 min ago</span>
+              </div>
+            </li>
+            <li class="alert-item">
+              <span class="alert-item__icon alert-item__icon--info" aria-label="Info">ℹ</span>
+              <div class="alert-item__body">
+                <span class="alert-item__text">Code reviewer restarted</span>
+                <span class="alert-item__time">1 hr ago</span>
+              </div>
+            </li>
+            <li class="alert-item">
+              <span class="alert-item__icon alert-item__icon--info" aria-label="Info">ℹ</span>
+              <div class="alert-item__body">
+                <span class="alert-item__text">Weekly digest sent</span>
+                <span class="alert-item__time">6 hr ago</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      </div><!-- /.page-layout -->
+      </div>
+
+      <!-- ── Analytics ──────────────────────────────────────────────── -->
+      <div class="view-panel" data-view-panel="analytics" id="view-analytics" hidden>
+      <div class="page-layout">
+      <div class="page-col">
+        <div class="stats stats--sm" role="list">
+          <article class="stat-card" role="listitem">
+            <div class="stat-card__top"><span class="stat-card__label">API requests (24h)</span><span class="stat-card__badge stat-card__badge--up">+9%</span></div>
+            <p class="stat-card__value">148<span class="stat-card__suffix">k</span></p>
+            <p class="stat-card__hint">vs yesterday</p>
+          </article>
+          <article class="stat-card" role="listitem">
+            <div class="stat-card__top"><span class="stat-card__label">Avg response</span><span class="stat-card__badge stat-card__badge--up">−4ms</span></div>
+            <p class="stat-card__value">892<span class="stat-card__suffix">ms</span></p>
+            <p class="stat-card__hint">p50 latency</p>
+          </article>
+          <article class="stat-card" role="listitem">
+            <div class="stat-card__top"><span class="stat-card__label">Error rate</span><span class="stat-card__badge stat-card__badge--up">−0.1%</span></div>
+            <p class="stat-card__value">0.3<span class="stat-card__suffix">%</span></p>
+            <p class="stat-card__hint">last 24 hours</p>
+          </article>
+        </div>
+
+        <section class="panel" aria-labelledby="ac-heading">
+          <div class="panel__head">
+            <div>
+              <h2 id="ac-heading" class="panel__title">API calls over time</h2>
+              <p class="panel__desc">Daily requests across all deployed models</p>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <svg class="chart" viewBox="0 0 800 220" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="acFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="acLine" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#818cf8"/>
+                  <stop offset="100%" stop-color="#c4b5fd"/>
+                </linearGradient>
+              </defs>
+              <path class="chart__grid" d="M0 55H800M0 110H800M0 165H800"/>
+              <path data-ac-area fill="url(#acFill)"/>
+              <path data-ac-line class="chart__line" fill="none" stroke="url(#acLine)" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 10px rgba(129,140,248,0.35))"/>
+            </svg>
+            <div class="chart__labels" data-ac-labels></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="ub-heading">
+          <div class="panel__head">
+            <div>
+              <h2 id="ub-heading" class="panel__title">Usage by model</h2>
+              <p class="panel__desc">Token distribution across deployed models this period</p>
+            </div>
+          </div>
+          <ul class="usage-bars">
+            <li class="usage-bar-item">
+              <span class="usage-bar-item__label">GPT-4</span>
+              <div class="usage-bar-item__track"><div class="usage-bar-item__fill" style="width:48%"></div></div>
+              <span class="usage-bar-item__val">48%</span>
+            </li>
+            <li class="usage-bar-item">
+              <span class="usage-bar-item__label">Claude</span>
+              <div class="usage-bar-item__track"><div class="usage-bar-item__fill usage-bar-item__fill--violet" style="width:31%"></div></div>
+              <span class="usage-bar-item__val">31%</span>
+            </li>
+            <li class="usage-bar-item">
+              <span class="usage-bar-item__label">Custom</span>
+              <div class="usage-bar-item__track"><div class="usage-bar-item__fill usage-bar-item__fill--amber" style="width:14%"></div></div>
+              <span class="usage-bar-item__val">14%</span>
+            </li>
+            <li class="usage-bar-item">
+              <span class="usage-bar-item__label">Whisper</span>
+              <div class="usage-bar-item__track"><div class="usage-bar-item__fill usage-bar-item__fill--rose" style="width:7%"></div></div>
+              <span class="usage-bar-item__val">7%</span>
+            </li>
+          </ul>
+        </section>
+      </div><!-- /.page-col -->
+      <aside class="right-rail" aria-label="Analytics insights">
+        <div class="panel right-panel">
+          <div class="right-panel__head">
+            <h3 class="right-panel__title">Insights</h3>
+          </div>
+          <ul class="mini-stat-list">
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">Top model</span>
+              <span class="mini-stat-row__val">GPT-4 · 48%</span>
+            </li>
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">Peak hour</span>
+              <span class="mini-stat-row__val">14:00–15:00</span>
+            </li>
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">Avg tokens / req</span>
+              <span class="mini-stat-row__val">1,247</span>
+            </li>
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">Cache hit rate</span>
+              <span class="mini-stat-row__val">71.3%</span>
+            </li>
+          </ul>
+        </div>
+        <div class="panel right-panel">
+          <div class="right-panel__head">
+            <h3 class="right-panel__title">Latency</h3>
+          </div>
+          <ul class="mini-stat-list">
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">p50</span>
+              <span class="mini-stat-row__val">892 ms</span>
+            </li>
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">p95</span>
+              <span class="mini-stat-row__val">1,340 ms</span>
+            </li>
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">p99</span>
+              <span class="mini-stat-row__val">2,180 ms</span>
+            </li>
+            <li class="mini-stat-row">
+              <span class="mini-stat-row__label">Apdex</span>
+              <span class="mini-stat-row__val">0.94</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      </div><!-- /.page-layout -->
+      </div>
+
+      <!-- ── AI Agents ───────────────────────────────────────────────── -->
+      <div class="view-panel" data-view-panel="agents" id="view-agents" hidden>
+        <div class="agents-layout">
+          <section class="panel agents-panel" aria-labelledby="ap-list-heading">
+            <div class="panel__head">
+              <div>
+                <h2 id="ap-list-heading" class="panel__title">All agents</h2>
+                <p class="panel__desc">Deployments, routing, and runtime health across environments.</p>
+              </div>
+            </div>
+            <div class="agents-snapshot" aria-label="Workspace overview">
+              <div class="agents-snapshot__cell">
+                <span class="agents-snapshot__val" data-chrome-total>5</span>
+                <span class="agents-snapshot__lab">Agents</span>
+              </div>
+              <div class="agents-snapshot__cell">
+                <span class="agents-snapshot__val" data-chrome-running>3</span>
+                <span class="agents-snapshot__lab">Running</span>
+              </div>
+              <div class="agents-snapshot__cell">
+                <span class="agents-snapshot__val">2</span>
+                <span class="agents-snapshot__lab">Regions</span>
+              </div>
+              <div class="agents-snapshot__cell">
+                <span class="agents-snapshot__val">99.2%</span>
+                <span class="agents-snapshot__lab">Avail.</span>
+              </div>
+            </div>
+            <p class="agents-panel__lede">Select a row to open the inspector — latency, model params, and activity stream update in real time.</p>
+            <ul class="agent-list" data-agents-page-list></ul>
+            <p class="agents-panel__foot" role="status">More agents <span class="agents-panel__foot-em">coming soon</span>.</p>
+          </section>
+          <div class="panel agent-detail" data-agent-detail aria-live="polite">
+            <div class="agent-detail__empty" data-agent-detail-empty>
+              <div class="agent-detail__empty-hero">
+                <div class="agent-detail__empty-icon" aria-hidden="true">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.8 5.5h5.7l-4.6 3.4 1.8 5.6L12 15.8 7.3 17.5l1.8-5.6L4.5 8.5h5.7L12 3z" stroke="url(#agI)" stroke-width="1.2" stroke-linejoin="round"/><defs><linearGradient id="agI" x1="4" y1="3" x2="20" y2="20"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs></svg>
+                </div>
+                <h3 class="agent-detail__empty-title">Inspector</h3>
+                <p class="agent-detail__empty-hint">Pick an agent on the left for live metrics, model parameters, and a short activity tail.</p>
+              </div>
+              <div class="agent-detail__empty-preview">
+                <p class="agent-detail__empty-cap">Fleet snapshot</p>
+                <div class="agent-detail__empty-grid">
+                  <div class="agent-detail__empty-tile">
+                    <span class="agent-detail__empty-k">Running</span>
+                    <span class="agent-detail__empty-v" data-chrome-fleet-run>3</span>
+                  </div>
+                  <div class="agent-detail__empty-tile">
+                    <span class="agent-detail__empty-k">Idle</span>
+                    <span class="agent-detail__empty-v" data-chrome-fleet-idle>1</span>
+                  </div>
+                  <div class="agent-detail__empty-tile">
+                    <span class="agent-detail__empty-k">Attention</span>
+                    <span class="agent-detail__empty-v agent-detail__empty-v--warn" data-chrome-fleet-attn>1</span>
+                  </div>
+                  <div class="agent-detail__empty-tile">
+                    <span class="agent-detail__empty-k">Req / min</span>
+                    <span class="agent-detail__empty-v">~4.2k</span>
+                  </div>
+                </div>
+                <ul class="agent-detail__empty-facts">
+                  <li><strong>Models</strong> GPT-4, Claude, Whisper, embeddings</li>
+                  <li><strong>Routing</strong> Production · Staging · hooks</li>
+                  <li><strong>Safety</strong> Token caps · PII strip · rate limits</li>
+                </ul>
+              </div>
+            </div>
+            <div class="agent-detail__shell" data-agent-detail-shell hidden>
+              <div class="agent-detail__inner" data-agent-detail-inner></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Workflows ──────────────────────────────────────────────── -->
+      <div class="view-panel" data-view-panel="workflows" id="view-workflows" hidden>
+      <div class="page-layout">
+      <div class="page-col">
+        <section class="panel">
+          <div class="panel__head">
+            <div>
+              <h2 class="panel__title">All workflows</h2>
+            </div>
+            <button type="button" class="btn btn--primary" data-wf-new>New workflow</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Workflow</th>
+                  <th>Status</th>
+                  <th>Trigger</th>
+                  <th>Steps</th>
+                  <th>Last run</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody data-wf-tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div><!-- /.page-col -->
+      <aside class="right-rail" aria-label="Workflow overview">
+        <div class="panel right-panel">
+          <div class="right-panel__head">
+            <h3 class="right-panel__title">Health</h3>
+          </div>
+          <div class="health-dots">
+            <div class="health-dot health-dot--active">
+              <span class="health-dot__count" data-rr-wf-active>3</span>
+              <span class="health-dot__label">Active</span>
+            </div>
+            <div class="health-dot health-dot--paused">
+              <span class="health-dot__count" data-rr-wf-paused>1</span>
+              <span class="health-dot__label">Paused</span>
+            </div>
+            <div class="health-dot health-dot--error">
+              <span class="health-dot__count" data-rr-wf-error>1</span>
+              <span class="health-dot__label">Error</span>
+            </div>
+          </div>
+          <p class="right-panel__footer"><strong data-rr-wf-total>5</strong> workflows total</p>
+        </div>
+        <div class="panel right-panel">
+          <div class="right-panel__head">
+            <h3 class="right-panel__title">Run stats</h3>
+            <span class="right-panel__badge" style="color:#4ade80;background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.2)">Today</span>
+          </div>
+          <div class="mini-stat-list">
+            <div class="mini-stat-row">
+              <span class="mini-stat-row__label">Total runs</span>
+              <span class="mini-stat-row__val" data-rr-wf-runs>47</span>
+            </div>
+            <div class="mini-stat-row">
+              <span class="mini-stat-row__label">Success rate</span>
+              <span class="mini-stat-row__val" style="color:#4ade80" data-rr-wf-success>94.7%</span>
+            </div>
+            <div class="mini-stat-row">
+              <span class="mini-stat-row__label">Failed</span>
+              <span class="mini-stat-row__val" style="color:#fb7185" data-rr-wf-failed>1</span>
+            </div>
+            <div class="mini-stat-row">
+              <span class="mini-stat-row__label">Avg duration</span>
+              <span class="mini-stat-row__val" data-rr-wf-dur>2.3 s</span>
+            </div>
+            <div class="mini-stat-row">
+              <span class="mini-stat-row__label">This month</span>
+              <span class="mini-stat-row__val" data-rr-wf-monthly>1,284</span>
+            </div>
+          </div>
+          <p class="right-panel__footer" data-rr-wf-last-exec>Last execution 2 min ago</p>
+        </div>
+      </aside>
+      </div><!-- /.page-layout -->
+      </div>
+
+      <!-- ── Integrations ───────────────────────────────────────────── -->
+      <div class="view-panel" data-view-panel="integrations" id="view-integrations" hidden>
+
+        <!-- Integration stats -->
+        <div class="int-stats-bar">
+          <div class="panel int-stat">
+            <span class="int-stat__val" style="color:#4ade80" data-int-connected>3</span>
+            <span class="int-stat__label">Connected</span>
+          </div>
+          <div class="panel int-stat">
+            <span class="int-stat__val">6</span>
+            <span class="int-stat__label">Available</span>
+          </div>
+          <div class="panel int-stat">
+            <span class="int-stat__val">12,847</span>
+            <span class="int-stat__label">API Calls Today</span>
+          </div>
+          <div class="panel int-stat">
+            <span class="int-stat__val">2.4 GB</span>
+            <span class="int-stat__label">Data Synced</span>
+          </div>
+          <div class="panel int-stat">
+            <span class="int-stat__val">94 ms</span>
+            <span class="int-stat__label">Avg Latency</span>
+          </div>
+          <div class="panel int-stat">
+            <span class="int-stat__val" style="color:#4ade80">99.9%</span>
+            <span class="int-stat__label">Uptime</span>
+          </div>
+        </div>
+
+        <div class="integrations-grid">
+          <div class="integration-card">
+            <div class="integration-card__head">
+              <span class="integration-card__icon" style="background:rgba(74,144,226,0.15);color:#60a5fa">✦</span>
+              <span class="integration-status integration-status--connected">Connected</span>
+            </div>
+            <h3 class="integration-card__name">Slack</h3>
+            <p class="integration-card__desc">Post workflow summaries and agent alerts to channels in real time.</p>
+            <div class="integration-card__actions">
+              <button type="button" class="btn btn--ghost" data-int-manage>Manage</button>
+              <button type="button" class="btn btn--ghost integration-card__disconnect" data-int-disconnect>Disconnect</button>
+            </div>
+          </div>
+          <div class="integration-card">
+            <div class="integration-card__head">
+              <span class="integration-card__icon" style="background:rgba(255,255,255,0.07);color:#e2e8f0">◈</span>
+              <span class="integration-status integration-status--connected">Connected</span>
+            </div>
+            <h3 class="integration-card__name">Notion</h3>
+            <p class="integration-card__desc">Sync agent outputs, meeting notes, and research summaries directly to pages.</p>
+            <div class="integration-card__actions">
+              <button type="button" class="btn btn--ghost" data-int-manage>Manage</button>
+              <button type="button" class="btn btn--ghost integration-card__disconnect" data-int-disconnect>Disconnect</button>
+            </div>
+          </div>
+          <div class="integration-card">
+            <div class="integration-card__head">
+              <span class="integration-card__icon" style="background:rgba(255,255,255,0.07);color:#94a3b8">⌥</span>
+              <span class="integration-status integration-status--connected">Connected</span>
+            </div>
+            <h3 class="integration-card__name">GitHub</h3>
+            <p class="integration-card__desc">Trigger code review agent on pull requests and post inline comments.</p>
+            <div class="integration-card__actions">
+              <button type="button" class="btn btn--ghost" data-int-manage>Manage</button>
+              <button type="button" class="btn btn--ghost integration-card__disconnect" data-int-disconnect>Disconnect</button>
+            </div>
+          </div>
+          <div class="integration-card">
+            <div class="integration-card__head">
+              <span class="integration-card__icon" style="background:rgba(251,146,60,0.12);color:#fb923c">⬡</span>
+              <span class="integration-status integration-status--off">Not connected</span>
+            </div>
+            <h3 class="integration-card__name">HubSpot</h3>
+            <p class="integration-card__desc">Enrich CRM records and auto-draft follow-up emails using support agent data.</p>
+            <div class="integration-card__actions">
+              <button type="button" class="btn btn--ghost" data-int-connect>Connect</button>
+            </div>
+          </div>
+          <div class="integration-card">
+            <div class="integration-card__head">
+              <span class="integration-card__icon" style="background:rgba(251,191,36,0.12);color:#fbbf24">⚡</span>
+              <span class="integration-status integration-status--off">Not connected</span>
+            </div>
+            <h3 class="integration-card__name">Zapier</h3>
+            <p class="integration-card__desc">Chain agents with thousands of apps using no-code automation triggers.</p>
+            <div class="integration-card__actions">
+              <button type="button" class="btn btn--ghost" data-int-connect>Connect</button>
+            </div>
+          </div>
+          <div class="integration-card">
+            <div class="integration-card__head">
+              <span class="integration-card__icon" style="background:rgba(94,234,212,0.1);color:#5eead4">⟨⟩</span>
+              <span class="integration-status integration-status--off">Not connected</span>
+            </div>
+            <h3 class="integration-card__name">Custom API</h3>
+            <p class="integration-card__desc">Connect any endpoint via REST or webhook to route data into your pipelines.</p>
+            <div class="integration-card__actions">
+              <button type="button" class="btn btn--ghost" data-int-connect>Connect</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Settings ───────────────────────────────────────────────── -->
+      <div class="view-panel" data-view-panel="settings" id="view-settings" hidden>
+      <div class="settings-layout">
+      <div class="settings-main">
+        <div class="settings-stack">
+
+          <section class="panel settings-section">
+            <h2 class="settings-section__title">Profile</h2>
+            <p class="settings-section__desc">Your display name appears in shared views and audit logs. Timezone affects all scheduled workflow triggers.</p>
+            <div class="settings-profile">
+              <div class="settings-avatar" data-settings-avatar>M</div>
+              <div class="settings-grid">
+                <div class="settings-field">
+                  <label class="settings-field__label">Display name</label>
+                  <input class="settings-input" type="text" value="M. Workspace" data-settings-name />
+                </div>
+                <div class="settings-field">
+                  <label class="settings-field__label" for="settings-tz">Timezone</label>
+                  <div class="settings-select-wrap">
+                    <select class="settings-input settings-select" id="settings-tz" data-settings-tz>
+                      <option value="UTC-12">UTC−12 — Baker Island</option>
+                      <option value="UTC-8">UTC−8 — Los Angeles (PST)</option>
+                      <option value="UTC-7">UTC−7 — Denver (MST)</option>
+                      <option value="UTC-6">UTC−6 — Chicago (CST)</option>
+                      <option value="UTC-5">UTC−5 — New York (EST)</option>
+                      <option value="UTC-4">UTC−4 — Halifax (AST)</option>
+                      <option value="UTC-3">UTC−3 — São Paulo (BRT)</option>
+                      <option value="UTC+0">UTC+0 — London (GMT)</option>
+                      <option value="UTC+1">UTC+1 — Berlin (CET)</option>
+                      <option value="UTC+2">UTC+2 — Helsinki (EET)</option>
+                      <option value="UTC+3" selected>UTC+3 — Moscow / Istanbul</option>
+                      <option value="UTC+4">UTC+4 — Dubai (GST)</option>
+                      <option value="UTC+5:30">UTC+5:30 — Mumbai (IST)</option>
+                      <option value="UTC+7">UTC+7 — Bangkok (ICT)</option>
+                      <option value="UTC+8">UTC+8 — Singapore / Beijing</option>
+                      <option value="UTC+9">UTC+9 — Tokyo (JST)</option>
+                      <option value="UTC+10">UTC+10 — Sydney (AEST)</option>
+                      <option value="UTC+12">UTC+12 — Auckland (NZST)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="settings-field">
+                  <label class="settings-field__label">Role</label>
+                  <input class="settings-input settings-input--readonly" type="text" value="Workspace Admin" readonly />
+                </div>
+                <div class="settings-field">
+                  <label class="settings-field__label">Email</label>
+                  <input class="settings-input settings-input--readonly" type="email" value="m@neuroflow.ai" data-settings-email readonly />
+                </div>
+              </div>
+            </div>
+            <div class="settings-actions">
+              <button type="button" class="btn btn--primary" data-settings-save>Save changes</button>
+            </div>
+          </section>
+
+          <section class="panel settings-section">
+            <div class="settings-section__head">
+              <div>
+                <h2 class="settings-section__title">API keys</h2>
+                <p class="settings-section__desc">Keys grant full API access. Rotate regularly and never expose them in client-side code.</p>
+              </div>
+              <button type="button" class="btn btn--ghost" data-settings-newkey>New key</button>
+            </div>
+            <div class="api-keys-list">
+              <div class="api-key-row">
+                <div class="api-key-row__info">
+                  <span class="api-key-row__name">Production key</span>
+                  <span class="api-key-row__hint" data-key-hint-0>Created 14 days ago · last used 2 min ago</span>
+                </div>
+                <code class="api-key-row__value">pk_live_••••••••••••••••3f2a</code>
+                <div class="api-key-row__actions">
+                  <button type="button" class="btn btn--ghost api-key-row__copy" data-copy-key>Copy</button>
+                  <button type="button" class="btn btn--ghost api-key-row__regen" data-regen-key data-key-name="Production key" data-key-hint="data-key-hint-0">Regenerate</button>
+                </div>
+              </div>
+              <div class="api-key-row">
+                <div class="api-key-row__info">
+                  <span class="api-key-row__name">Staging key</span>
+                  <span class="api-key-row__hint" data-key-hint-1>Created 3 days ago · last used 1 hr ago</span>
+                </div>
+                <code class="api-key-row__value">sk_test_••••••••••••••••b91c</code>
+                <div class="api-key-row__actions">
+                  <button type="button" class="btn btn--ghost api-key-row__copy" data-copy-key>Copy</button>
+                  <button type="button" class="btn btn--ghost api-key-row__regen" data-regen-key data-key-name="Staging key" data-key-hint="data-key-hint-1">Regenerate</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel settings-section">
+            <h2 class="settings-section__title">Notifications</h2>
+            <p class="settings-section__desc">Choose what triggers an email or in-app alert. Changes take effect immediately.</p>
+            <div class="settings-toggles">
+              <div class="settings-toggle-row">
+                <div class="settings-toggle-row__info">
+                  <span class="settings-toggle-row__label">Agent errors</span>
+                  <span class="settings-toggle-row__hint">Get notified when an agent degrades or fails</span>
+                </div>
+                <button class="toggle-track toggle-track--on" data-toggle aria-label="Toggle agent errors" aria-pressed="true"><span class="toggle-thumb"></span></button>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="settings-toggle-row__info">
+                  <span class="settings-toggle-row__label">Workflow completions</span>
+                  <span class="settings-toggle-row__hint">Notify on successful workflow runs</span>
+                </div>
+                <button class="toggle-track" data-toggle aria-label="Toggle workflow completions" aria-pressed="false"><span class="toggle-thumb"></span></button>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="settings-toggle-row__info">
+                  <span class="settings-toggle-row__label">Budget threshold alerts</span>
+                  <span class="settings-toggle-row__hint">Alert at 80% of monthly token budget</span>
+                </div>
+                <button class="toggle-track toggle-track--on" data-toggle aria-label="Toggle budget alerts" aria-pressed="true"><span class="toggle-thumb"></span></button>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="settings-toggle-row__info">
+                  <span class="settings-toggle-row__label">Weekly digest</span>
+                  <span class="settings-toggle-row__hint">Summary of usage and activity every Monday</span>
+                </div>
+                <button class="toggle-track" data-toggle aria-label="Toggle weekly digest" aria-pressed="false"><span class="toggle-thumb"></span></button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel settings-section">
+            <h2 class="settings-section__title">Billing</h2>
+            <div class="billing-plan">
+              <div class="billing-plan__info">
+                <span class="billing-plan__name">Pro plan</span>
+                <span class="billing-plan__price">$49 / month</span>
+              </div>
+              <button type="button" class="btn btn--ghost">Upgrade</button>
+            </div>
+            <div class="billing-usage">
+              <div class="billing-usage__head">
+                <span class="billing-usage__label">Token usage this period</span>
+                <span class="billing-usage__val">1.24M / 5M</span>
+              </div>
+              <div class="billing-bar">
+                <div class="billing-bar__fill" style="width:24.8%"></div>
+              </div>
+              <span class="billing-usage__hint">Resets June 1 · 75.2% remaining</span>
+            </div>
+          </section>
+
+          <section class="panel settings-section">
+            <h2 class="settings-section__title">Security</h2>
+            <p class="settings-section__desc">Protect your account and API surface. 2FA changes require re-verification.</p>
+            <div class="settings-toggles">
+              <div class="settings-toggle-row">
+                <div class="settings-toggle-row__info">
+                  <span class="settings-toggle-row__label">Two-factor authentication</span>
+                  <span class="settings-toggle-row__hint">Enabled via authenticator app</span>
+                </div>
+                <button class="toggle-track toggle-track--on" data-toggle data-toggle-2fa aria-label="Toggle 2FA" aria-pressed="true"><span class="toggle-thumb"></span></button>
+              </div>
+              <div class="settings-toggle-row">
+                <div class="settings-toggle-row__info">
+                  <span class="settings-toggle-row__label">API key rotation reminders</span>
+                  <span class="settings-toggle-row__hint">Remind to rotate keys older than 90 days</span>
+                </div>
+                <button class="toggle-track toggle-track--on" data-toggle aria-label="Toggle rotation reminders" aria-pressed="true"><span class="toggle-thumb"></span></button>
+              </div>
+            </div>
+            <div class="security-meta">
+              <span class="security-meta__item">Last login — 2 May 2026, 23:41 UTC+3</span>
+              <span class="security-meta__item">1 active session</span>
+            </div>
+          </section>
+
+        </div><!-- /.settings-stack -->
+      </div><!-- /.settings-main -->
+
+      <!-- ── Settings right aside ──────────────────────────────────── -->
+      <aside class="settings-aside">
+
+        <div class="panel settings-aside-panel">
+          <h3 class="settings-aside-panel__title">Workspace</h3>
+          <p class="settings-section__desc">Current workspace configuration and plan details.</p>
+          <ul class="ws-info-list">
+            <li class="ws-info-row">
+              <span class="ws-info-row__label">Name</span>
+              <span class="ws-info-row__val">Neuroflow AI</span>
+            </li>
+            <li class="ws-info-row">
+              <span class="ws-info-row__label">Plan</span>
+              <span class="ws-info-row__val"><span class="ws-badge ws-badge--pro">Pro</span></span>
+            </li>
+            <li class="ws-info-row">
+              <span class="ws-info-row__label">Region</span>
+              <span class="ws-info-row__val">EU West · Frankfurt</span>
+            </li>
+            <li class="ws-info-row">
+              <span class="ws-info-row__label">Members</span>
+              <span class="ws-info-row__val">6 seats used</span>
+            </li>
+            <li class="ws-info-row">
+              <span class="ws-info-row__label">Created</span>
+              <span class="ws-info-row__val">Jan 14, 2025</span>
+            </li>
+            <li class="ws-info-row">
+              <span class="ws-info-row__label">Data residency</span>
+              <span class="ws-info-row__val">GDPR compliant</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel settings-aside-panel">
+          <div class="settings-aside-panel__head">
+            <h3 class="settings-aside-panel__title">Team</h3>
+            <button type="button" class="btn btn--ghost settings-invite-btn" data-invite-btn>+ Invite</button>
+          </div>
+          <p class="settings-section__desc">Manage who has access to this workspace.</p>
+          <ul class="team-list">
+            <li class="team-member">
+              <span class="team-member__avatar" style="background:rgba(99,102,241,0.15);color:#818cf8">M</span>
+              <div class="team-member__info">
+                <span class="team-member__name" data-team-owner-name>M. Workspace <span class="team-member__you">you</span></span>
+                <span class="team-member__role team-member__role--admin">Admin</span>
+              </div>
+            </li>
+            <li class="team-member">
+              <span class="team-member__avatar" style="background:rgba(56,189,248,0.15);color:#38bdf8">A</span>
+              <div class="team-member__info">
+                <span class="team-member__name">A. Chen</span>
+                <span class="team-member__role">Developer</span>
+              </div>
+            </li>
+            <li class="team-member">
+              <span class="team-member__avatar" style="background:rgba(74,222,128,0.15);color:#4ade80">B</span>
+              <div class="team-member__info">
+                <span class="team-member__name">B. Santos</span>
+                <span class="team-member__role">Developer</span>
+              </div>
+            </li>
+            <li class="team-member">
+              <span class="team-member__avatar" style="background:rgba(251,191,36,0.15);color:#fbbf24">D</span>
+              <div class="team-member__info">
+                <span class="team-member__name">D. Kim</span>
+                <span class="team-member__role">Viewer</span>
+              </div>
+            </li>
+            <li class="team-member">
+              <span class="team-member__avatar" style="background:rgba(251,113,133,0.15);color:#fb7185">S</span>
+              <div class="team-member__info">
+                <span class="team-member__name">S. Park</span>
+                <span class="team-member__role">Viewer</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel settings-aside-panel settings-aside-panel--danger">
+          <h3 class="settings-aside-panel__title">Danger zone</h3>
+          <p class="settings-section__desc">These actions are permanent and cannot be undone.</p>
+          <div class="danger-actions">
+            <div class="danger-action">
+              <div class="danger-action__text">
+                <span class="danger-action__label">Reset workspace data</span>
+                <span class="danger-action__hint">Clears all agent history and workflow runs</span>
+              </div>
+              <button type="button" class="btn btn--ghost danger-btn--warn" data-danger-reset>Reset</button>
+            </div>
+            <div class="danger-action">
+              <div class="danger-action__text">
+                <span class="danger-action__label">Delete workspace</span>
+                <span class="danger-action__hint">Permanently removes all data, agents, and members</span>
+              </div>
+              <button type="button" class="btn btn--ghost danger-btn--red" data-danger-delete>Delete</button>
+            </div>
+          </div>
+        </div>
+
+      </aside><!-- /.settings-aside -->
+      </div><!-- /.settings-layout -->
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast hidden></div>
+
+  <!-- Workflow creation modal -->
+  <div class="modal-backdrop" id="wf-modal" role="dialog" aria-modal="true" aria-labelledby="wf-modal-title" data-wf-modal hidden>
+    <div class="modal" data-wf-modal-dialog>
+      <div class="modal__header">
+        <h2 class="modal__title" id="wf-modal-title">New Workflow</h2>
+        <button class="modal__close" data-wf-modal-close aria-label="Close modal" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <form class="modal-form" id="wf-modal-form" data-wf-form novalidate>
+          <div class="modal-form__field">
+            <label class="modal-form__label" for="wf-name">Workflow name <span class="modal-form__required" aria-hidden="true">*</span></label>
+            <input class="modal-form__input" id="wf-name" name="wf-name" type="text" placeholder="e.g. Invoice processing" data-wf-input-name autocomplete="off" />
+            <p class="modal-form__error" data-wf-name-error aria-live="polite" hidden>Name is required.</p>
+          </div>
+          <div class="modal-form__field">
+            <label class="modal-form__label" for="wf-trigger">Trigger</label>
+            <div class="modal-form__select-wrap">
+              <select class="modal-form__input modal-form__select" id="wf-trigger" name="wf-trigger" data-wf-input-trigger>
+                <option value="" disabled selected>— Select trigger —</option>
+                <option value="Webhook">Webhook</option>
+                <option value="Form submit">Form submit</option>
+                <option value="File upload">File upload</option>
+                <option value="Cron · Daily">Cron · Daily</option>
+                <option value="Cron · Weekly">Cron · Weekly</option>
+                <option value="Cron · Monthly">Cron · Monthly</option>
+                <option value="Cron · 02:00">Cron · 02:00</option>
+                <option value="Manual">Manual</option>
+                <option value="API call">API call</option>
+                <option value="Database event">Database event</option>
+              </select>
+            </div>
+            <p class="modal-form__error" data-wf-trigger-error aria-live="polite" hidden>Please select a trigger.</p>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--ghost" data-wf-modal-close type="button">Cancel</button>
+        <button class="btn btn--primary" data-wf-submit type="submit" form="wf-modal-form">Create workflow</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js.js"></script>
+</body>
+</html>

@@ -280,6 +280,11 @@
 
   function isMobile() { return window.matchMedia("(max-width: 900px)").matches; }
 
+  /** Phone browser “desktop site” — wide layout on a narrow screen */
+  function isDesktopSiteOnPhone() {
+    return window.matchMedia("(min-width: 861px) and (hover: none) and (pointer: coarse)").matches;
+  }
+
   // Seed timestamps only for entries that don't already have one (from localStorage)
   DASHBOARD_DATA.workflows.forEach(function (wf) {
     if (!wf.lastRunTs) wf.lastRunTs = parseLastRunTs(wf.lastRun);
@@ -542,7 +547,7 @@
 
   function pinSettingsAside() {
     if (!settingsAside || !settingsViewEl || settingsViewEl.hidden) return;
-    if (window.innerWidth <= 860) {
+    if (window.innerWidth <= 860 || isDesktopSiteOnPhone()) {
       unpinSettingsAside();
       return;
     }
